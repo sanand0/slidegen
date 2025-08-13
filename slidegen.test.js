@@ -75,7 +75,7 @@ describe("slidegen", () => {
       expect(result).toContain("height: 9rem");
     });
 
-    it("applies theme fonts and colors", () => {
+    it("applies fonts and colors from deck root", () => {
       const result = html(testDecks.corporate);
       expect(result).toContain("font-family: Inter");
       expect(result).toContain("background: #ffffff");
@@ -119,7 +119,7 @@ describe("slidegen", () => {
         slides: [
           {
             ...testDecks.basic.slides[0],
-            overrides: [{ shape: "title", text: "<script>alert('xss')</script>" }],
+            shapes: { title: { text: "<script>alert('xss')</script>" } },
           },
         ],
       };
@@ -176,7 +176,7 @@ describe("slidegen", () => {
       const result = html(testDecks.corporate);
       document.body.innerHTML = result;
 
-      // Footer should be the master shape, so it should appear in the HTML
+      // Footer should be the root shape, so it should appear in the HTML
       const textElements = document.querySelectorAll(".text-shape");
       const footerText = [...textElements].find((el) => el.textContent.includes("ACME Corp"));
       expect(footerText).toBeTruthy();
@@ -185,9 +185,9 @@ describe("slidegen", () => {
   });
 
   describe("Background handling", () => {
-    it("applies master background fill", () => {
+    it("applies layout background fill", () => {
       const result = html(testDecks.basic);
-      expect(result).toContain("background: #ffffff");
+      expect(result).toContain("background-color: #ffffff");
     });
 
     it("applies background images from image deck", () => {
@@ -197,7 +197,7 @@ describe("slidegen", () => {
       const slideElements = document.querySelectorAll(".slide");
       expect(slideElements.length).toBeGreaterThan(0);
 
-      // Check that master background images are applied as background div elements
+      // Check that root background images are applied as background div elements
       const backgroundElements = document.querySelectorAll(".background");
       expect(backgroundElements.length).toBeGreaterThan(0);
       expect(result).toContain("background-image: url('https://placehold.co/1280x720/e2e8f0/64748b?text=Background')");
@@ -213,7 +213,7 @@ describe("slidegen", () => {
     });
   });
 
-  describe("Shape positioning", () => {
+  describe("Shape positioning and z-ordering", () => {
     it("applies percentage-based positioning", () => {
       const result = html(testDecks.basic);
       expect(result).toContain("left: 10%");
@@ -222,38 +222,93 @@ describe("slidegen", () => {
       expect(result).toContain("height: 20%");
     });
 
-    it("handles z-index and opacity from master shapes", () => {
+    it("handles z-index and opacity from root shapes", () => {
       const result = html(testDecks.corporate);
       document.body.innerHTML = result;
 
-      const logoElement = document.querySelector('[data-shape-id="logo"]');
-      if (logoElement) {
-        expect(result).toMatch(/z-index:\s*\d+/);
-      }
+      // Check for z-index in the output
+      expect(result).toMatch(/z-index:\s*\d+/);
+    });
+
+    it("renders shapes in z-order", () => {
+      const testDeckWithZIndex = {
+        ...testDecks.basic,
+        shapes: {
+          overlay: {
+            id: "overlay",
+            type: "text",
+            text: "Overlay",
+            x: 0,
+            y: 0,
+            w: 100,
+            h: 100,
+            unit: "%",
+            z: 999,
+            opacity: 0.8,
+          },
+        },
+      };
+      const result = html(testDeckWithZIndex);
+      expect(result).toContain("z-index: 999");
+      expect(result).toContain("opacity: 0.8");
+    });
+  });
+
+  describe("Shape merging", () => {
+    it("merges shapes from root, layout, and slide levels", () => {
+      const testDeck = {
+        version: "1.0.0",
+        shapes: {
+          root_shape: { id: "root_shape", type: "text", text: "Root", x: 0, y: 0, w: 100, h: 10, unit: "%", z: 1 },
+        },
+        layouts: {
+          test_layout: {
+            name: "Test Layout",
+            shapes: {
+              layout_shape: {
+                id: "layout_shape",
+                type: "text",
+                text: "Layout",
+                x: 0,
+                y: 20,
+                w: 100,
+                h: 10,
+                unit: "%",
+                z: 2,
+              },
+              root_shape: { text: "Root Override from Layout" },
+            },
+          },
+        },
+        slides: [
+          {
+            id: "test_slide",
+            layout: "test_layout",
+            shapes: {
+              slide_shape: {
+                id: "slide_shape",
+                type: "text",
+                text: "Slide",
+                x: 0,
+                y: 40,
+                w: 100,
+                h: 10,
+                unit: "%",
+                z: 3,
+              },
+              root_shape: { text: "Final Override from Slide" },
+            },
+          },
+        ],
+      };
+      const result = html(testDeck);
+      expect(result).toContain("Final Override from Slide");
+      expect(result).toContain("Layout");
+      expect(result).toContain("Slide");
     });
   });
 
   describe("Error handling", () => {
-    it("handles missing masters gracefully", () => {
-      const deckWithBadMaster = {
-        ...testDecks.basic,
-        slides: [
-          {
-            ...testDecks.basic.slides[0],
-            master: "non-existent",
-          },
-        ],
-      };
-      const result = html(deckWithBadMaster);
-      document.body.innerHTML = result;
-
-      const deckElement = document.querySelector(".slidegen-deck");
-      expect(deckElement).toBeTruthy();
-
-      const slideElements = document.querySelectorAll(".slide");
-      expect(slideElements.length).toBe(0);
-    });
-
     it("handles missing layouts gracefully", () => {
       const deckWithBadLayout = {
         ...testDecks.basic,
@@ -279,7 +334,7 @@ describe("slidegen", () => {
       expect(result).toContain("height: 720px");
     });
 
-    it("applies default theme when minimal", () => {
+    it("applies default fonts and colors when minimal", () => {
       const result = html(testDecks.minimal);
       expect(result).toContain("font-family: Arial");
       expect(result).toContain("background: #ffffff");
@@ -290,61 +345,27 @@ describe("slidegen", () => {
     it("handles different units (em, rem)", () => {
       const customDeck = {
         ...testDecks.basic,
-        masters: [
-          {
-            ...testDecks.basic.masters[0],
-            layouts: [
-              {
-                ...testDecks.basic.masters[0].layouts[0],
-                shapes: [
-                  {
-                    ...testDecks.basic.masters[0].layouts[0].shapes[0],
-                    unit: "em",
-                    x: 2,
-                    y: 3,
-                    w: 10,
-                    h: 5,
-                  },
-                ],
+        layouts: {
+          "title-only": {
+            ...testDecks.basic.layouts["title-only"],
+            shapes: {
+              title: {
+                ...testDecks.basic.layouts["title-only"].shapes.title,
+                unit: "em",
+                x: 2,
+                y: 3,
+                w: 10,
+                h: 5,
               },
-            ],
+            },
           },
-        ],
+        },
       };
       const result = html(customDeck);
       expect(result).toContain("left: 2em");
       expect(result).toContain("top: 3em");
       expect(result).toContain("width: 10em");
       expect(result).toContain("height: 5em");
-    });
-
-    it("handles opacity and z-index from test deck shapes", () => {
-      // Add a test deck with z-index and opacity
-      const testDeckWithZIndex = {
-        ...testDecks.basic,
-        masters: [
-          {
-            ...testDecks.basic.masters[0],
-            shapes: [
-              {
-                id: "overlay",
-                type: "text",
-                text: "Overlay",
-                x: 0,
-                y: 0,
-                w: 100,
-                h: 100,
-                unit: "%",
-                z: 999,
-                opacity: 0.8,
-              },
-            ],
-          },
-        ],
-      };
-      const result = html(testDeckWithZIndex);
-      expect(result).toContain("z-index: 999");
-      expect(result).toContain("opacity: 0.8");
     });
 
     it("handles line-height styling", () => {
@@ -435,27 +456,28 @@ describe("slidegen", () => {
 
     it("handles SVG shapes without text", () => {
       const testShape = {
-        ...testDecks.basic,
-        masters: [
-          {
-            ...testDecks.basic.masters[0],
-            layouts: [
-              {
-                ...testDecks.basic.masters[0].layouts[0],
-                shapes: [
-                  {
-                    id: "simple-rect",
-                    type: "rectangle",
-                    x: 10,
-                    y: 10,
-                    w: 50,
-                    h: 30,
-                    unit: "%",
-                    fill: "#ff0000",
-                  },
-                ],
+        version: "1.0.0",
+        layouts: {
+          "title-only": {
+            name: "Title Only",
+            shapes: {
+              "simple-rect": {
+                id: "simple-rect",
+                type: "rectangle",
+                x: 10,
+                y: 10,
+                w: 50,
+                h: 30,
+                unit: "%",
+                fill: "#ff0000",
               },
-            ],
+            },
+          },
+        },
+        slides: [
+          {
+            id: "test-slide",
+            layout: "title-only",
           },
         ],
       };
@@ -507,33 +529,27 @@ describe("slidegen", () => {
       shapeTypes.forEach((shapeType) => {
         const testDeck = {
           ...testDecks.basic,
-          masters: [
-            {
-              ...testDecks.basic.masters[0],
-              layouts: [
-                {
-                  id: "test-layout",
-                  shapes: [
-                    {
-                      id: "test-shape",
-                      type: shapeType,
-                      x: 10,
-                      y: 10,
-                      w: 50,
-                      h: 30,
-                      unit: "%",
-                      fill: "#2563eb",
-                      text: "Test",
-                    },
-                  ],
+          layouts: {
+            "test-layout": {
+              name: "Test Layout",
+              shapes: {
+                "test-shape": {
+                  id: "test-shape",
+                  type: shapeType,
+                  x: 10,
+                  y: 10,
+                  w: 50,
+                  h: 30,
+                  unit: "%",
+                  fill: "#2563eb",
+                  text: "Test",
                 },
-              ],
+              },
             },
-          ],
+          },
           slides: [
             {
               id: "test-slide",
-              master: testDecks.basic.masters[0].id,
               layout: "test-layout",
             },
           ],
@@ -564,24 +580,18 @@ describe("slidegen", () => {
     it("supports slide-specific shapes", () => {
       const testDeckWithSlideShapes = {
         ...testDecks.basic,
-        masters: [
-          {
-            ...testDecks.basic.masters[0],
-            layouts: [
-              {
-                ...testDecks.basic.masters[0].layouts[0],
-                shapes: [], // No layout shapes
-              },
-            ],
+        layouts: {
+          "title-only": {
+            name: "Title Only",
+            shapes: {}, // No layout shapes
           },
-        ],
+        },
         slides: [
           {
             id: "slide-with-shapes",
-            master: testDecks.basic.masters[0].id,
-            layout: testDecks.basic.masters[0].layouts[0].id,
-            shapes: [
-              {
+            layout: "title-only",
+            shapes: {
+              "slide-rect": {
                 id: "slide-rect",
                 type: "rectangle",
                 x: 10,
@@ -593,7 +603,7 @@ describe("slidegen", () => {
                 text: "Slide Shape",
                 text_color: "#ffffff",
               },
-              {
+              "slide-ellipse": {
                 id: "slide-ellipse",
                 type: "ellipse",
                 x: 10,
@@ -605,7 +615,7 @@ describe("slidegen", () => {
                 text: "Another Slide Shape",
                 text_color: "#ffffff",
               },
-            ],
+            },
           },
         ],
       };
@@ -677,47 +687,41 @@ describe("slidegen", () => {
       // Create a test with specific shape parameters
       const testDeck = {
         ...testDecks.basic,
-        masters: [
-          {
-            ...testDecks.basic.masters[0],
-            layouts: [
-              {
-                id: "param-test",
-                shapes: [
-                  {
-                    id: "rounded-test",
-                    type: "rounded-rectangle",
-                    x: 10,
-                    y: 10,
-                    w: 50,
-                    h: 30,
-                    unit: "%",
-                    fill: "#2563eb",
-                    text: "Curved",
-                    curvature: 25,
-                  },
-                  {
-                    id: "arrow-test",
-                    type: "arrow-right",
-                    x: 10,
-                    y: 50,
-                    w: 50,
-                    h: 20,
-                    unit: "%",
-                    fill: "#16a34a",
-                    text: "Arrow",
-                    tipSize: 30,
-                    stemSize: 50,
-                  },
-                ],
+        layouts: {
+          "param-test": {
+            name: "Param Test",
+            shapes: {
+              "rounded-test": {
+                id: "rounded-test",
+                type: "rounded-rectangle",
+                x: 10,
+                y: 10,
+                w: 50,
+                h: 30,
+                unit: "%",
+                fill: "#2563eb",
+                text: "Curved",
+                curvature: 25,
               },
-            ],
+              "arrow-test": {
+                id: "arrow-test",
+                type: "arrow-right",
+                x: 10,
+                y: 50,
+                w: 50,
+                h: 20,
+                unit: "%",
+                fill: "#16a34a",
+                text: "Arrow",
+                tipSize: 30,
+                stemSize: 50,
+              },
+            },
           },
-        ],
+        },
         slides: [
           {
             id: "param-slide",
-            master: testDecks.basic.masters[0].id,
             layout: "param-test",
           },
         ],

@@ -1,36 +1,36 @@
 {
+  "version": "1.0.0",
   "id": "basic-deck",
   "name": "Basic Deck",
   "slide_size": { "w": 1280, "h": 720, "unit": "px" },
-  "theme": {
-    "colors": {
-      "bg": "#ffffff",
-      "text": "#333333"
-    },
-    "fonts": { "body": "Arial" }
+  "colors": {
+    "bg": "#ffffff",
+    "text": "#333333"
   },
-  "masters": [{
-    "id": "simple-master",
-    "bg": { "fill": "#ffffff" },
-    "layouts": [{
-      "id": "title-only",
-      "shapes": [{
-        "id": "title",
-        "type": "text",
-        "x": 10, "y": 30, "w": 80, "h": 20, "unit": "%",
-        "text": "Slide Title",
-        "font_size": 48,
-        "text_align": "center"
-      }]
-    }]
-  }],
+  "fonts": { "body": "Arial" },
+  "layouts": {
+    "title-only": {
+      "name": "Title Only",
+      "bg": { "fill": "#ffffff" },
+      "shapes": {
+        "title": {
+          "id": "title",
+          "type": "text",
+          "x": 10, "y": 30, "w": 80, "h": 20, "unit": "%",
+          "text": "Slide Title",
+          "font_size": 48,
+          "text_align": "center"
+        }
+      }
+    }
+  },
   "slides": [{
     "id": "slide1",
-    "master": "simple-master", 
     "layout": "title-only",
-    "overrides": [{
-      "shape": "title",
-      "text": "Welcome!"
-    }]
+    "shapes": {
+      "title": {
+        "text": "Welcome!"
+      }
+    }
   }]
 }

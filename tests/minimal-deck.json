@@ -1,18 +1,19 @@
 {
+  "version": "1.0.0",
+  "layouts": {
+    "simple": {
+      "name": "Simple",
+      "shapes": {
+        "text1": {
+          "id": "text1",
+          "type": "text",
+          "text": "Hello World"
+        }
+      }
+    }
+  },
   "slides": [{
     "id": "slide1",
-    "master": "default",
     "layout": "simple"
-  }],
-  "masters": [{
-    "id": "default",
-    "layouts": [{
-      "id": "simple", 
-      "shapes": [{
-        "id": "text1",
-        "type": "text",
-        "text": "Hello World"
-      }]
-    }]
   }]
 }

@@ -32,45 +32,71 @@ import html from "https://cdn.jsdelivr.net/npm/slidegen@1";
 import html from "slidegen";
 
 const deck = {
+  version: "1.0.0",
+  id: "deck-id",
+  name: "Example Deck",
   slide_size: { w: 1280, h: 720, unit: "px" },
-  theme: {
-    colors: {
-      bg: "#ffffff",
-      text: "#0f172a",
-    },
-    fonts: {
-      body: "Inter",
+  colors: {
+    accent1: "#2563eb",
+    accent2: "#16a34a",
+    text: "#0f172a",
+    muted: "#475569",
+    bg: "#ffffff",
+    surface: "#f8fafc",
+  },
+  fonts: { heading: "Inter", body: "Inter" },
+  bg: { image: "https://cdn.example.com/bg.jpg", image_fit: "cover" },
+  shapes: {
+    logo: {
+      id: "logo",
+      type: "image",
+      role: "logo",
+      x: 90,
+      y: 2,
+      w: 8,
+      h: 8,
+      unit: "%",
+      z: 100,
+      image_src: "https://cdn.example.com/logo.svg",
+      image_fit: "contain",
+      opacity: 1,
     },
   },
-  masters: [
-    {
-      id: "master-1",
+  layouts: {
+    "lyt-title": {
+      name: "Title Only",
       bg: { fill: "#ffffff" },
-      layouts: [
-        {
-          id: "title-slide",
-          shapes: [
-            {
-              id: "title",
-              type: "text",
-              x: 10,
-              y: 30,
-              w: 80,
-              h: 20,
-              unit: "%",
-              text: "My Title",
-              font_size: 48,
-            },
-          ],
+      shapes: {
+        title: {
+          id: "title",
+          type: "text",
+          role: "title",
+          x: 8,
+          y: 28,
+          w: 84,
+          h: 20,
+          unit: "%",
+          z: 10,
+          text: "Slide Title",
+          font_family: "Inter",
+          font_size: 48,
+          font_weight: 700,
+          line_height: 1.1,
+          color: "#0f172a",
+          text_align: "left",
         },
-      ],
+      },
     },
-  ],
+  },
   slides: [
     {
-      id: "slide-1",
-      master: "master-1",
-      layout: "title-slide",
+      id: "s1",
+      layout: "lyt-title",
+      shapes: {
+        title: { text: "LLM Strategy 2025" },
+      },
+      notes: "Open with impact metrics.",
+      meta: { org_name: "Straive", date: "2025-08-12", status: "draft" },
     },
   ],
 };
@@ -85,94 +111,186 @@ document.body.innerHTML = slideHTML;
 
 A slide deck consists of:
 
+- **version**: Schema version (always "1.0.0")
+- **id**: Unique deck identifier
+- **name**: Human-readable deck name
 - **slide_size**: Dimensions and units for all slides
-- **theme**: Colors and fonts used throughout
-- **masters**: Reusable templates with backgrounds and layouts
+- **colors**: Color palette used throughout
+- **fonts**: Font definitions
+- **bg**: Root background (optional)
+- **shapes**: Root-level shapes (optional)
+- **layouts**: Layout definitions keyed by ID
 - **slides**: Individual slide instances
 
-### Slide Size
+### Complete Schema Example
 
 ```json
 {
-  "slide_size": {
-    "w": 1280,
-    "h": 720,
-    "unit": "px"
-  }
-}
-```
-
-### Theme
-
-```json
-{
-  "theme": {
-    "colors": {
-      "accent1": "#2563eb",
-      "accent2": "#16a34a",
-      "text": "#0f172a",
-      "muted": "#475569",
-      "bg": "#ffffff",
-      "surface": "#f8fafc"
+  "version": "1.0.0",
+  "id": "deck-id",
+  "name": "Example Deck",
+  "slide_size": { "w": 1280, "h": 720, "unit": "px" },
+  "colors": {
+    "accent1": "#2563eb",
+    "accent2": "#16a34a",
+    "text": "#0f172a",
+    "muted": "#475569",
+    "bg": "#ffffff",
+    "surface": "#f8fafc"
+  },
+  "fonts": { "heading": "Inter", "body": "Inter" },
+  "bg": { "image": "https://cdn.example.com/bg.jpg", "image_fit": "cover" },
+  "shapes": {
+    "logo": {
+      "id": "logo",
+      "type": "image",
+      "role": "logo",
+      "x": 90,
+      "y": 2,
+      "w": 8,
+      "h": 8,
+      "unit": "%",
+      "z": 100,
+      "image_src": "https://cdn.example.com/logo.svg",
+      "image_fit": "contain",
+      "opacity": 1
     },
-    "fonts": {
-      "heading": "Inter",
-      "body": "Inter"
+    "footer": {
+      "id": "footer",
+      "type": "text",
+      "role": "footer",
+      "x": 4,
+      "y": 92,
+      "w": 92,
+      "h": 6,
+      "unit": "%",
+      "z": 101,
+      "text": "{org_name} • {date}",
+      "text_align": "right",
+      "font_family": "Inter",
+      "font_size": 12,
+      "color": "#475569"
     }
-  }
-}
-```
-
-### Masters and Layouts
-
-Masters define reusable templates with backgrounds and multiple layout options:
-
-```json
-{
-  "masters": [
-    {
-      "id": "master-default",
-      "bg": {
-        "fill": "#ffffff",
-        "image": "https://example.com/bg.jpg",
-        "image_fit": "cover"
-      },
-      "shapes": [
-        {
-          "id": "logo",
-          "type": "image",
-          "x": 90,
-          "y": 5,
-          "w": 8,
-          "h": 8,
+  },
+  "layouts": {
+    "lyt-title": {
+      "name": "Title Only",
+      "bg": { "fill": "#ffffff" },
+      "shapes": {
+        "title": {
+          "id": "title",
+          "type": "text",
+          "role": "title",
+          "x": 8,
+          "y": 28,
+          "w": 84,
+          "h": 20,
           "unit": "%",
-          "image_src": "https://example.com/logo.svg"
+          "z": 10,
+          "text": "Slide Title",
+          "font_family": "Inter",
+          "font_size": 48,
+          "font_weight": 700,
+          "line_height": 1.1,
+          "color": "#0f172a",
+          "text_align": "left"
+        },
+        "subtitle": {
+          "id": "subtitle",
+          "type": "text",
+          "role": "subtitle",
+          "x": 8,
+          "y": 50,
+          "w": 84,
+          "h": 10,
+          "unit": "%",
+          "z": 11,
+          "text": "Subtitle or key message",
+          "font_family": "Inter",
+          "font_size": 22,
+          "color": "#475569",
+          "text_align": "left"
         }
-      ],
-      "layouts": [
-        {
-          "id": "title-content",
-          "bg": { "inherit": true },
-          "shapes": [
-            {
-              "id": "title",
-              "type": "text",
-              "x": 5,
-              "y": 10,
-              "w": 90,
-              "h": 15,
-              "unit": "%",
-              "text": "Title Here",
-              "font_size": 36,
-              "font_weight": 700
-            }
-          ]
+      }
+    },
+    "lyt-title-content": {
+      "name": "Title + Content",
+      "shapes": {
+        "title": {
+          "id": "title",
+          "type": "text",
+          "role": "title",
+          "x": 6,
+          "y": 6,
+          "w": 88,
+          "h": 12,
+          "unit": "%",
+          "z": 10,
+          "text": "Section Header",
+          "font_family": "Inter",
+          "font_size": 36,
+          "font_weight": 700,
+          "line_height": 1.15,
+          "color": "#0f172a",
+          "text_align": "left"
+        },
+        "content": {
+          "id": "content",
+          "type": "list",
+          "role": "content",
+          "x": 6,
+          "y": 22,
+          "w": 88,
+          "h": 68,
+          "unit": "%",
+          "z": 11,
+          "items": ["Item A", "Item B"],
+          "bullet": "•",
+          "font_family": "Inter",
+          "font_size": 20,
+          "line_height": 1.35
         }
-      ]
+      }
+    }
+  },
+  "slides": [
+    {
+      "id": "s1",
+      "layout": "lyt-title",
+      "shapes": {
+        "title": { "text": "LLM Strategy 2025" },
+        "subtitle": { "text": "From prototypes to platforms" }
+      },
+      "notes": "Open with impact metrics.",
+      "meta": { "org_name": "Straive", "date": "2025-08-12", "status": "draft" }
     }
   ]
 }
 ```
+
+### Shape Merging Rules
+
+Shapes are merged with strict precedence (lowest → highest):
+
+1. **Root shapes** (`deck.shapes`)
+2. **Layout shapes** (`layout.shapes` for the slide's layout)
+3. **Slide shapes** (`slide.shapes`)
+
+Only shapes present in any source participate in merging. Deep merge by key with arrays (like `items`) replacing entirely.
+
+### Background Precedence
+
+Backgrounds resolve with precedence: `root.bg` < `layout.bg` < `slide.bg`. Missing levels inherit from lower levels.
+
+Each `bg` may include:
+
+- `fill`: Background color
+- `image`: Background image URL
+- `image_fit`: "cover", "contain", "fill", "none", or "scale-down"
+
+### Layouts
+
+Layouts are keyed by ID at the top level. No `id` field inside each layout entry.
 
 ### Shape Types
 
@@ -233,21 +351,20 @@ All SVG shapes support fill, stroke, and text overlays:
 
 ### Slides
 
-Individual slides reference masters and layouts with optional overrides:
+Individual slides reference layouts and can override shape properties:
 
 ```json
 {
   "slides": [
     {
-      "id": "slide-1",
-      "master": "master-default",
-      "layout": "title-content",
-      "overrides": [
-        {
-          "shape": "title",
-          "text": "Custom Title"
-        }
-      ],
+      "id": "s1",
+      "layout": "lyt-title",
+      "bg": { "fill": "#f8fafc" },
+      "shapes": {
+        "title": { "text": "Custom Title" },
+        "subtitle": { "text": "Custom subtitle" }
+      },
+      "notes": "Speaker notes here.",
       "meta": {
         "org_name": "ACME Corp",
         "date": "2025-08-13"

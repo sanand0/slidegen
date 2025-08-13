@@ -1,115 +1,129 @@
 {
+  "version": "1.0.0",
   "id": "corporate-deck",
   "name": "Corporate Presentation",
   "slide_size": { "w": 1280, "h": 720, "unit": "px" },
-  "theme": {
-    "colors": {
-      "accent1": "#2563eb",
-      "text": "#0f172a",
-      "muted": "#475569",
-      "bg": "#ffffff"
-    },
-    "fonts": {
-      "heading": "Inter",
-      "body": "Inter"
-    }
+  "colors": {
+    "accent1": "#2563eb",
+    "text": "#0f172a",
+    "muted": "#475569",
+    "bg": "#ffffff"
   },
-  "masters": [{
-    "id": "corp-master",
-    "bg": { "fill": "#ffffff" },
-    "shapes": [{
+  "fonts": {
+    "heading": "Inter",
+    "body": "Inter"
+  },
+  "bg": { "fill": "#ffffff" },
+  "shapes": {
+    "logo": {
       "id": "logo",
       "type": "image",
       "x": 85, "y": 5, "w": 12, "h": 8, "unit": "%",
+      "z": 100,
       "image_src": "https://placehold.co/150x50/2563eb/ffffff?text=LOGO"
-    }, {
+    },
+    "footer": {
       "id": "footer",
       "type": "text",
       "x": 5, "y": 92, "w": 90, "h": 5, "unit": "%",
+      "z": 101,
       "text": "{company} | {date}",
       "font_size": 12,
       "color": "#475569",
       "text_align": "right"
-    }],
-    "layouts": [{
-      "id": "title-slide",
-      "shapes": [{
-        "id": "title",
-        "type": "text",
-        "x": 10, "y": 25, "w": 80, "h": 25, "unit": "%",
-        "text": "Presentation Title",
-        "font_family": "Inter",
-        "font_size": 52,
-        "font_weight": 700,
-        "color": "#0f172a",
-        "text_align": "center"
-      }, {
-        "id": "subtitle",
-        "type": "text",
-        "x": 10, "y": 55, "w": 80, "h": 15, "unit": "%",
-        "text": "Subtitle here",
-        "font_family": "Inter",
-        "font_size": 24,
-        "color": "#475569",
-        "text_align": "center"
-      }]
-    }, {
-      "id": "content-slide",
-      "shapes": [{
-        "id": "title",
-        "type": "text",
-        "x": 5, "y": 15, "w": 90, "h": 12, "unit": "%",
-        "text": "Section Title",
-        "font_family": "Inter",
-        "font_size": 36,
-        "font_weight": 700,
-        "color": "#2563eb"
-      }, {
-        "id": "content",
-        "type": "list",
-        "x": 5, "y": 30, "w": 90, "h": 55, "unit": "%",
-        "items": [
-          "Key point one",
-          "Important insight two",
-          "Critical finding three"
-        ],
-        "font_family": "Inter",
-        "font_size": 24,
-        "line_height": 1.6
-      }]
-    }]
-  }],
+    }
+  },
+  "layouts": {
+    "title-slide": {
+      "name": "Title Slide",
+      "shapes": {
+        "title": {
+          "id": "title",
+          "type": "text",
+          "x": 10, "y": 25, "w": 80, "h": 25, "unit": "%",
+          "z": 10,
+          "text": "Presentation Title",
+          "font_family": "Inter",
+          "font_size": 52,
+          "font_weight": 700,
+          "color": "#0f172a",
+          "text_align": "center"
+        },
+        "subtitle": {
+          "id": "subtitle",
+          "type": "text",
+          "x": 10, "y": 55, "w": 80, "h": 15, "unit": "%",
+          "z": 11,
+          "text": "Subtitle here",
+          "font_family": "Inter",
+          "font_size": 24,
+          "color": "#475569",
+          "text_align": "center"
+        }
+      }
+    },
+    "content-slide": {
+      "name": "Content Slide",
+      "shapes": {
+        "title": {
+          "id": "title",
+          "type": "text",
+          "x": 5, "y": 15, "w": 90, "h": 12, "unit": "%",
+          "z": 10,
+          "text": "Section Title",
+          "font_family": "Inter",
+          "font_size": 36,
+          "font_weight": 700,
+          "color": "#2563eb"
+        },
+        "content": {
+          "id": "content",
+          "type": "list",
+          "x": 5, "y": 30, "w": 90, "h": 55, "unit": "%",
+          "z": 11,
+          "items": [
+            "Key point one",
+            "Important insight two",
+            "Critical finding three"
+          ],
+          "font_family": "Inter",
+          "font_size": 24,
+          "line_height": 1.6
+        }
+      }
+    }
+  },
   "slides": [{
     "id": "title",
-    "master": "corp-master",
     "layout": "title-slide",
-    "overrides": [{
-      "shape": "title",
-      "text": "Q4 Business Review"
-    }, {
-      "shape": "subtitle",
-      "text": "Strategic insights and next steps"
-    }],
+    "shapes": {
+      "title": {
+        "text": "Q4 Business Review"
+      },
+      "subtitle": {
+        "text": "Strategic insights and next steps"
+      }
+    },
     "meta": {
       "company": "ACME Corp",
       "date": "December 2024"
     }
   }, {
     "id": "content1",
-    "master": "corp-master",
     "layout": "content-slide",
-    "overrides": [{
-      "shape": "title",
-      "text": "Key Achievements"
-    }, {
-      "shape": "content",
-      "items": [
-        "Revenue growth of 23% YoY",
-        "Expanded to 3 new markets",
-        "Customer satisfaction score: 94%",
-        "Team size increased by 40%"
-      ]
-    }],
+    "shapes": {
+      "title": {
+        "text": "Key Achievements"
+      },
+      "content": {
+        "items": [
+          "Revenue growth of 23% YoY",
+          "Expanded to 3 new markets",
+          "Customer satisfaction score: 94%",
+          "Team size increased by 40%"
+        ]
+      }
+    },
     "meta": {
       "company": "ACME Corp",
       "date": "December 2024"

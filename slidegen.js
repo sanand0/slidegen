@@ -4,13 +4,13 @@
 export default function html(deck) {
   if (!deck || !deck.slides) return "";
 
-  const { slide_size, theme, masters, slides } = deck;
+  const { slide_size, colors, fonts, slides } = deck;
 
   // Create scoped CSS styles
-  const css = generateScopedCSS(slide_size, theme);
+  const css = generateScopedCSS(slide_size, colors, fonts);
 
   // Generate HTML for each slide
-  const slidesHTML = slides.map((slide) => generateSlideHTML(slide, masters)).join("");
+  const slidesHTML = slides.map((slide) => generateSlideHTML(slide, deck)).join("");
 
   return `<div class="slidegen-deck" data-deck-id="${deck.id || ""}">
   <style scoped>${css}</style>
@@ -18,19 +18,20 @@ export default function html(deck) {
 </div>`;
 }
 
-function generateScopedCSS(slideSize, theme) {
+function generateScopedCSS(slideSize, colors, fonts) {
   const { w, h, unit = "px" } = slideSize || { w: 1280, h: 720, unit: "px" };
-  const colors = theme?.colors || {};
+  const deckColors = colors || {};
+  const deckFonts = fonts || {};
 
   return `
     .slidegen-deck * { margin: 0; padding: 0; box-sizing: border-box; }
-    .slidegen-deck { font-family: ${theme?.fonts?.body || "Arial"}, sans-serif; display: flex; flex-direction: column; }
+    .slidegen-deck { font-family: ${deckFonts?.body || "Arial"}, sans-serif; display: flex; flex-direction: column; }
     .slidegen-deck .slide {
       width: ${w}${unit};
       height: ${h}${unit};
       position: relative;
       overflow: hidden;
-      background: ${colors.bg || "#ffffff"};
+      background: ${deckColors.bg || "#ffffff"};
     }
     .slidegen-deck .shape { position: absolute; }
     .slidegen-deck .text-shape {
@@ -78,24 +79,22 @@ function generateScopedCSS(slideSize, theme) {
   `;
 }
 
-function generateSlideHTML(slide, masters) {
-  const master = masters?.find((m) => m.id === slide.master);
-  if (!master) return "";
-
-  const layout = master.layouts?.find((l) => l.id === slide.layout);
+function generateSlideHTML(slide, deck) {
+  const layout = deck.layouts?.[slide.layout];
   if (!layout) return "";
 
   let slideHTML = `<div class="slide" data-slide-id="${slide.id}">`;
 
-  // Add background
-  slideHTML += generateBackground(layout.bg?.inherit ? master.bg : layout.bg);
+  // Add background with precedence: root.bg < layout.bg < slide.bg
+  const resolvedBg = resolveBackground(deck.bg, layout.bg, slide.bg);
+  slideHTML += generateBackground(resolvedBg);
 
-  // Add master, then layout, then slide shapes
-  for (let container of [master, layout, slide])
-    if (container.shapes)
-      slideHTML += container.shapes
-        .map((shape) => generateShapeHTML(shape, slide.meta || {}, slide.overrides))
-        .join("");
+  // Merge shapes with precedence: root.shapes < layout.shapes < slide.shapes
+  const mergedShapes = mergeShapes(deck.shapes, layout.shapes, slide.shapes);
+
+  // Sort by z-index and render
+  const sortedShapes = Object.values(mergedShapes).sort((a, b) => (a.z || 0) - (b.z || 0));
+  slideHTML += sortedShapes.map((shape) => generateShapeHTML(shape, slide.meta || {})).join("");
 
   slideHTML += "</div>";
   return slideHTML;
@@ -118,28 +117,56 @@ function generateBackground(bg) {
     : "";
 }
 
-function generateShapeHTML(shape, meta = {}, overrides = []) {
-  const override = overrides.find((o) => o.shape === shape.id);
-  const finalShape = { ...shape, ...override };
+function resolveBackground(rootBg, layoutBg, slideBg) {
+  return { ...rootBg, ...layoutBg, ...slideBg };
+}
 
-  const { x = 0, y = 0, w = 100, h = 100, unit = "%" } = finalShape;
+function mergeShapes(rootShapes, layoutShapes, slideShapes) {
+  const merged = {};
+
+  // Add root shapes
+  if (rootShapes) {
+    for (const [id, shape] of Object.entries(rootShapes)) {
+      merged[id] = { ...shape };
+    }
+  }
+
+  // Merge layout shapes
+  if (layoutShapes) {
+    for (const [id, shape] of Object.entries(layoutShapes)) {
+      merged[id] = merged[id] ? { ...merged[id], ...shape } : { ...shape };
+    }
+  }
+
+  // Merge slide shapes
+  if (slideShapes) {
+    for (const [id, shape] of Object.entries(slideShapes)) {
+      merged[id] = merged[id] ? { ...merged[id], ...shape } : { ...shape };
+    }
+  }
+
+  return merged;
+}
+
+function generateShapeHTML(shape, meta = {}) {
+  const { x = 0, y = 0, w = 100, h = 100, unit = "%" } = shape;
   const baseStyle = `left: ${x}${unit}; top: ${y}${unit}; width: ${w}${unit}; height: ${h}${unit};`;
   let additionalStyle = "";
 
-  if (finalShape.z !== undefined) additionalStyle += `z-index: ${finalShape.z};`;
-  if (finalShape.opacity !== undefined) additionalStyle += `opacity: ${finalShape.opacity};`;
+  if (shape.z !== undefined) additionalStyle += `z-index: ${shape.z};`;
+  if (shape.opacity !== undefined) additionalStyle += `opacity: ${shape.opacity};`;
 
   const style = `${baseStyle}${additionalStyle}`;
 
-  switch (finalShape.type) {
+  switch (shape.type) {
     case "text":
-      return generateTextShape(finalShape, style, meta);
+      return generateTextShape(shape, style, meta);
     case "image":
-      return generateImageShape(finalShape, style);
+      return generateImageShape(shape, style);
     case "list":
-      return generateListShape(finalShape, style);
+      return generateListShape(shape, style);
     default:
-      return generateSVGShape(finalShape, style, meta);
+      return generateSVGShape(shape, style, meta);
   }
 }
 
