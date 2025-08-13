@@ -1,0 +1,37 @@
+{
+  "name": "slidegen",
+  "version": "1.0.0",
+  "description": "Generates slides as HTML and PPTX from schema",
+  "homepage": "https://github.com/sanand0/slidegen#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sanand0/slidegen.git"
+  },
+  "license": "MIT",
+  "author": "Anand S <root.node@gmail.com>",
+  "type": "module",
+  "module": "slidegen.js",
+  "prettier": {
+    "printWidth": 120
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "browser": "dist/slidegen.min.js",
+  "exports": "./dist/slidegen.min.js",
+  "scripts": {
+    "build": "npx -y esbuild slidegen.js --bundle --format=esm --outfile=dist/slidegen.min.js --minify",
+    "lint:oxlint": "npx -y oxlint --fix",
+    "lint:js-md": "npx -y prettier@3.6 --print-width 120 --write '**/*.js' '!**/*.min.js' '!dist/**' '**/*.md'",
+    "lint:html": "npx -y js-beautify@1 '**/*.html' --type html --replace --indent-size 2 --max-preserve-newlines 1 --end-with-newline",
+    "lint": "npm run lint:oxlint && npm run lint:js-md && npm run lint:html",
+    "test": "npx -y vitest run",
+    "prepublishOnly": "npm run lint && npm run build && npm test"
+  },
+  "devDependencies": {
+    "happy-dom": "^18.0.1"
+  },
+  "keywords": []
+}

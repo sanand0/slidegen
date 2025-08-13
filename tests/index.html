@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slidegen Tester</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container-fluid py-3">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <h1 class="h4">Slidegen Tester</h1>
+        <p class="text-muted">Enter JSON config or select a sample to render slides</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="sample-select" class="form-label">Sample Decks:</label>
+          <select id="sample-select" class="form-select">
+            <option value="">Choose a sample...</option>
+            <option value="basic-deck.json">Basic Deck</option>
+            <option value="corporate-deck.json">Corporate Presentation</option>
+            <option value="image-deck.json">Image-Rich Deck</option>
+            <option value="minimal-deck.json">Minimal Example</option>
+            <option value="shapes-demo.json">SVG Shapes Demo</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="json-input" class="form-label">JSON Configuration:</label>
+          <textarea id="json-input" class="form-control font-monospace" rows="20" placeholder="Enter slide deck JSON here..."></textarea>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Rendered HTML:</label>
+          <div id="render-output" class="border p-3 bg-light" style="min-height: 500px; overflow: auto;">
+            <p class="text-muted">Enter JSON to see rendered slides here</p>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Generated HTML Source:</label>
+          <textarea id="html-source" class="form-control font-monospace" rows="8" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import html from '../slidegen.js';
+    const sampleSelect = document.getElementById('sample-select');
+    const jsonInput = document.getElementById('json-input');
+    const renderOutput = document.getElementById('render-output');
+    const htmlSource = document.getElementById('html-source');
+
+    function renderSlides() {
+      try {
+        const jsonText = jsonInput.value.trim();
+        if (!jsonText) {
+          renderOutput.innerHTML = '<p class="text-muted">Enter JSON to see rendered slides here</p>';
+          htmlSource.value = '';
+          return;
+        }
+        const deck = JSON.parse(jsonText);
+        const htmlResult = html(deck);
+        renderOutput.innerHTML = htmlResult;
+        htmlSource.value = htmlResult;
+      } catch (error) {
+        renderOutput.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+        htmlSource.value = '';
+      }
+    }
+    async function loadSample(filename) {
+      if (!filename) return;
+      try {
+        const response = await fetch(filename);
+        const json = await response.text();
+        jsonInput.value = json;
+        renderSlides();
+      } catch (error) {
+        alert('Error loading sample: ' + error.message);
+      }
+    }
+    sampleSelect.addEventListener('change', (e) => {
+      loadSample(e.target.value);
+    });
+    jsonInput.addEventListener('input', renderSlides);
+    // Load basic deck by default
+    loadSample('basic-deck.json');
+
+  </script>
+</body>
+
+</html>
