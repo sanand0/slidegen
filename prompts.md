@@ -1,8 +1,8 @@
 # Prompts
 
-## Create slidegen.html (Claude Code)
+## Create slideforge.html (Claude Code)
 
-We are going to create a slidegen library. In slidegen.js, implement a function `slidegen.html(slides)` will convert a slide deck in the JSON format below and return a HTML string.
+We are going to create a slideforge library. In slideforge.js, implement a function `slideforge.html(slides)` will convert a slide deck in the JSON format below and return a HTML string.
 
 Write extensive unit test cases using vitest + happy-dom to cover every aspect of the JSON syntax below. Ensure that the tests pass.
 
@@ -55,9 +55,9 @@ Write extensive unit test cases using vitest + happy-dom to cover every aspect o
           "unit": "%",
           "text": "{org_name} • {date}",
           "text_align": "right",
-          "font_family": "Inter",
-          "font_size": 12,
-          "color": "#475569"
+          "text_font": "Inter",
+          "text_size": 12,
+          "text_color": "#475569"
         }
       ],
       "layouts": [
@@ -76,11 +76,11 @@ Write extensive unit test cases using vitest + happy-dom to cover every aspect o
               "h": 20,
               "unit": "%",
               "text": "Slide Title",
-              "font_family": "Inter",
-              "font_size": 48,
-              "font_weight": 700,
+              "text_font": "Inter",
+              "text_size": 48,
+              "text_weight": 700,
               "line_height": 1.1,
-              "color": "#0f172a",
+              "text_color": "#0f172a",
               "text_align": "left",
               "placeholder": "text"
             },
@@ -94,9 +94,9 @@ Write extensive unit test cases using vitest + happy-dom to cover every aspect o
               "h": 10,
               "unit": "%",
               "text": "Subtitle or key message",
-              "font_family": "Inter",
-              "font_size": 22,
-              "color": "#475569",
+              "text_font": "Inter",
+              "text_size": 22,
+              "text_color": "#475569",
               "text_align": "left",
               "placeholder": "text"
             }
@@ -117,11 +117,11 @@ Write extensive unit test cases using vitest + happy-dom to cover every aspect o
               "h": 12,
               "unit": "%",
               "text": "Section Header",
-              "font_family": "Inter",
-              "font_size": 36,
-              "font_weight": 700,
+              "text_font": "Inter",
+              "text_size": 36,
+              "text_weight": 700,
               "line_height": 1.15,
-              "color": "#0f172a",
+              "text_color": "#0f172a",
               "text_align": "left",
               "placeholder": "text"
             },
@@ -170,8 +170,8 @@ Write extensive unit test cases using vitest + happy-dom to cover every aspect o
             "Roadblocks: access, training, workflow fit"
           ],
           "bullet": "•",
-          "font_family": "Inter",
-          "font_size": 20,
+          "text_font": "Inter",
+          "text_size": 20,
           "line_height": 1.35
         }
       ],
@@ -184,15 +184,15 @@ Write extensive unit test cases using vitest + happy-dom to cover every aspect o
 
 ## Refactor, spec, and preview (Claude Code)
 
-Modify slidegen.js and slidegen.test.js as follows:
+Modify slideforge.js and slideforge.test.js as follows:
 
-- slidegen.html() should generate only the deck snippet currently in slidesHTML, with scoped CSS. Modify other code accordingly.
+- slideforge.html() should generate only the deck snippet currently in slidesHTML, with scoped CSS. Modify other code accordingly.
 - Remove the "type": "placeholder". We no longer need it.
 - Render type: list as unordered lists.
 
 Document the specification in README.md.
 
-Create a series of sample deck JSON files in tests/ for use in slidegen.test.js.
+Create a series of sample deck JSON files in tests/ for use in slideforge.test.js.
 
 Create a MINIMAL tests/index.html with a simple CDN-based Bootstrap UI that lets the user enter a JSON config into a textarea and render it as HTML side-by-side on input/change. Add a select that lets the user pick from the sample deck JSONs in tests/ and fetch them into the textarea.
 
@@ -255,7 +255,7 @@ Some shapes may use additional parameters to shape the SVG path. Incorporate the
 
 - rounded-rectangle: curvature
 - arrow-\*: tipSize, stemSize
-- pentagon, chevron: tipSize
+- pentagon, chevron-start: tipSize
 - speech: tipSize
 
 Update shapes-demo.json to have one row per shape, with each row featuring 4 different size, color, text_size, text, and shape parameter variations.
@@ -351,9 +351,9 @@ New schema (authoritative example)
       "z": 101,
       "text": "{org_name} • {date}",
       "text_align": "right",
-      "font_family": "Inter",
-      "font_size": 12,
-      "color": "#475569"
+      "text_font": "Inter",
+      "text_size": 12,
+      "text_color": "#475569"
     }
   },
 
@@ -374,11 +374,11 @@ New schema (authoritative example)
           "unit": "%",
           "z": 10,
           "text": "Slide Title",
-          "font_family": "Inter",
-          "font_size": 48,
-          "font_weight": 700,
+          "text_font": "Inter",
+          "text_size": 48,
+          "text_weight": 700,
           "line_height": 1.1,
-          "color": "#0f172a",
+          "text_color": "#0f172a",
           "text_align": "left"
         },
         "subtitle": {
@@ -392,9 +392,9 @@ New schema (authoritative example)
           "unit": "%",
           "z": 11,
           "text": "Subtitle or key message",
-          "font_family": "Inter",
-          "font_size": 22,
-          "color": "#475569",
+          "text_font": "Inter",
+          "text_size": 22,
+          "text_color": "#475569",
           "text_align": "left"
         }
       }
@@ -413,11 +413,11 @@ New schema (authoritative example)
           "unit": "%",
           "z": 10,
           "text": "Section Header",
-          "font_family": "Inter",
-          "font_size": 36,
-          "font_weight": 700,
+          "text_font": "Inter",
+          "text_size": 36,
+          "text_weight": 700,
           "line_height": 1.15,
-          "color": "#0f172a",
+          "text_color": "#0f172a",
           "text_align": "left"
         },
         "content": {
@@ -432,8 +432,8 @@ New schema (authoritative example)
           "z": 11,
           "items": ["Item A", "Item B"],
           "bullet": "•",
-          "font_family": "Inter",
-          "font_size": 20,
+          "text_font": "Inter",
+          "text_size": 20,
           "line_height": 1.35
         }
       }
@@ -482,14 +482,14 @@ Merge semantics (strict)
 
 Code changes
 
-- Update `slidegen.js` to: (a) accept the new schema, (b) implement the merge exactly as above, (c) drop all `masters` and `overrides` handling, (d) read `bg`, `colors` and `fonts` from the hierarchy only, (e) resolve background using root/layout/slide precedence and support `fill`, `image`, `image_fit`, (f) preserve all previously supported shape rendering behaviors (list renders to `<ul>`, shapes text div outside SVG, borders, slide-level shapes, etc.).
+- Update `slideforge.js` to: (a) accept the new schema, (b) implement the merge exactly as above, (c) drop all `masters` and `overrides` handling, (d) read `bg`, `colors` and `fonts` from the hierarchy only, (e) resolve background using root/layout/slide precedence and support `fill`, `image`, `image_fit`, (f) preserve all previously supported shape rendering behaviors (list renders to `<ul>`, shapes text div outside SVG, borders, slide-level shapes, etc.).
 - Keep functions small and reusable; avoid classes; validate early with if-return.
 
 Docs and tests
 
 - Update `README.md` spec to describe the new schema and merge rules with the JSON example above, including background precedence and allowed fields.
 - Replace all test decks in `tests/` (incl. `shapes-demo.json`) to the new schema. Remove any `masters`/`overrides` remnants.
-- Update `slidegen.test.js` to cover: (1) shapes object maps at all levels, (2) deep-merge precedence and array replacement, (3) z-order rendering, (4) list rendering, (5) colors/fonts from root only, (6) no support for old schema.
+- Update `slideforge.test.js` to cover: (1) shapes object maps at all levels, (2) deep-merge precedence and array replacement, (3) z-order rendering, (4) list rendering, (5) colors/fonts from root only, (6) no support for old schema.
 - Update `tests/index.html` to load and render the updated sample decks; ensure the UI and loading indicator still work.
 
 Acceptance criteria
@@ -508,3 +508,72 @@ Acceptance criteria
 - Usage by model:
   - claude-3-5-haiku: 6.7k input, 332 output, 0 cache read, 0 cache write
   - claude-sonnet: 66 input, 37.9k output, 2.7m cache read, 122.0k cache write
+
+## Improve shapes and tests
+
+Goal: fix chevron geometry, replace the current `pentagon` with a right-tag shape, add precise DOM hooks for testing, and make the test page render slides full-width while preserving aspect ratio. Keep changes minimal, functional, and deduplicated.
+
+Implementation
+
+- tests/index.html: render the deck scaled to the panel width, preserving aspect ratio, centered horizontally.
+  - Compute scale from container width and deck slide_size.w; apply `transform: scale()` to a wrapper and set `transform-origin: top left`.
+  - Keep UI minimal; no spinner. Display errors using a Bootstrap alert with the full error message.
+
+- slideforge.js: improve shape geometry and testability.
+  - Add `data-shape-id` and `data-shape-type` on every `.shape` wrapper.
+  - Chevron: implement a symmetric chevron with consistent band thickness and centered notch depth.
+    - Keep `tipSize` to control the notch depth (distance from the right tip back into the body along the x-axis).
+    - Use default thickness ratio `thickness = 0.3` of height; allow optional `thickness` on the shape to override.
+  - Deduplicate by extracting path helpers.
+  - Replace the current `pentagon` visual with a `chevron-start` shape: flat left edge, triangular right tip (same band thickness concept as chevron but no left notch).
+    - New type name: `chevron-start`.
+    - No backward compatibility required for `pentagon`
+  - Keep existing behavior for all other shapes. Preserve text overlay outside SVG as is.
+
+- slideforge.test.js: make assertions specific and element-targeted.
+  - Prefer DOM queries with `data-shape-id` and `data-shape-type` over broad string includes; only use string checks when DOM attributes aren’t available.
+  - For `chevron` in `shapes-demo.json`, assert the presence of a single `<path>` under the shape, and verify `d` reflects a centered notch and consistent band thickness via expected coordinates for the given `(w, h, tipSize)`.
+  - For `chevron-start` (formerly pentagon), assert the polygon has a flat left edge and a triangular right tip (no inner notch), again via expected coordinates in `d` for the test cases.
+  - Keep existing coverage for fills, strokes, text overlays, z-order, and responsive viewBox.
+
+- tests/shapes-demo.json: rename `type: "pentagon"` to `type: "chevron-start"` for all samples in the polygon slide; keep ids unchanged.
+
+Shape geometry details
+
+- Coordinate system: use the current responsive coordinate space with `viewBox="0 0 w h"` and the existing `margin = min(w, h) * 0.1` (unchanged) unless that margin would cause self-intersection; clamp as needed.
+- Chevron (symmetric band): build the outline from two parallel limbs with uniform band thickness `t = thickness * h`.
+  - Outer polygon (reference): `(m, m) → (w - tip - m, m) → (w - m, h/2) → (w - tip - m, h - m) → (m, h - m) → (m + tip, h/2)`.
+  - Adjust the inner notch so the two limbs have uniform width `t`. Use vector offset from the midline to place the inner notch point at `(m + tip, h/2)` and keep limb widths ≈ `t` across. If needed, slightly tweak `tip` by ≤ 1 unit to maintain continuity and avoid self-intersections.
+- chevron-start (flat-left, triangular-right): polygon points `(m, m) → (w - tip - m, m) → (w - m, h/2) → (w - tip - m, h - m) → (m, h - m) → Z`.
+
+Acceptance criteria
+
+- tests/index.html
+  - Deck scales to fill the right panel width, preserves aspect ratio, and is horizontally centered.
+  - Errors render as a visible Bootstrap alert with the full message.
+
+- slideforge.js
+  - `.shape` wrappers include `data-shape-id` and `data-shape-type` attributes.
+  - Chevron renders with a centered notch and visually uniform band thickness; `tipSize` controls depth; optional `thickness` is respected.
+  - `type: "chevron-start"` renders as specified; `type: "pentagon"` remains as an alias, implemented via `chevron-start` code path.
+
+- slideforge.test.js
+  - Update tests to query shapes by `data-shape-id` and assert exact attributes/styles/text where applicable.
+  - Add targeted assertions for chevron and chevron-start path `d` based on known test dimensions and parameters.
+  - Keep other tests intact but replace broad string checks where feasible with targeted DOM assertions.
+
+- tests/shapes-demo.json
+  - All `pentagon*` shapes use `type: "chevron-start"`.
+
+- Visual parity
+  - The chevron and right-tag shapes resemble `correct-shapes.webp` rather than `current-shapes.webp`.
+
+Notes
+
+- If exact numeric checks for path `d` are brittle across environments, assert key anchor coordinates (e.g., tip x, mid y, left/top/bottom x/y) within a small epsilon rather than full-string equality.
+
+## Manual Corrections
+
+- Drop all "pentagon" in favor of "chevron-start"
+- Use stemSize instead of thickness in the chevron shapes, reducing the number of parameters.
+- Allow shape.margin

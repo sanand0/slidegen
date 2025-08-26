@@ -23,9 +23,9 @@
           "x": 5, "y": 5, "w": 90, "h": 15, "unit": "%",
           "z": 10,
           "text": "Image Title",
-          "font_size": 32,
-          "font_weight": 600,
-          "color": "#ffffff",
+          "text_size": 32,
+          "text_weight": 600,
+          "text_color": "#ffffff",
           "text_align": "center"
         },
         "main-image": {
@@ -42,8 +42,8 @@
           "x": 20, "y": 80, "w": 60, "h": 10, "unit": "%",
           "z": 12,
           "text": "Image caption goes here",
-          "font_size": 16,
-          "color": "#64748b",
+          "text_size": 16,
+          "text_color": "#64748b",
           "text_align": "center"
         }
       }

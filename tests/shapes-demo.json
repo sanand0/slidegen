@@ -23,10 +23,10 @@
       "x": 2, "y": 1, "w": 96, "h": 5, "unit": "%",
       "z": 100,
       "text": "{slide_title}",
-      "font_family": "Inter",
-      "font_size": 24,
-      "font_weight": 700,
-      "color": "#0f172a",
+      "text_font": "Inter",
+      "text_size": 24,
+      "text_weight": 700,
+      "text_color": "#0f172a",
       "text_align": "center"
     }
   },
@@ -43,22 +43,22 @@
       "meta": { "slide_title": "Basic Shapes - Rectangle, Rounded Rectangle, Ellipse, Diamond" },
       "shapes": {
         "rect1": {"id": "rect1", "type": "rectangle", "x": 5, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#2563eb", "text": "Rectangle", "text_color": "#ffffff", "text_size": 12},
-        "rect2": {"id": "rect2", "type": "rectangle", "x": 28, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#3b82f6", "text": "With Border", "text_color": "#ffffff", "text_size": 12, "stroke": "#1d4ed8", "stroke_width": 0.2},
+        "rect2": {"id": "rect2", "type": "rectangle", "x": 28, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#3b82f6", "text": "With Border + Margin", "text_color": "#ffffff", "text_size": 12, "stroke": "#1d4ed8", "stroke_width": 0.2, "margin": 2},
         "rect3": {"id": "rect3", "type": "rectangle", "x": 51, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#1e40af", "text": "Dashed", "text_color": "#ffffff", "text_size": 12, "stroke": "#fbbf24", "stroke_width": 0.5, "stroke_dasharray": "5,5"},
         "rect4": {"id": "rect4", "type": "rectangle", "x": 74, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#1e3a8a", "text": "Long text that wraps nicely", "text_color": "#ffffff", "text_size": 11, "stroke": "#ef4444", "stroke_width": 0.2, "stroke_linecap": "round"},
 
         "rounded1": {"id": "rounded1", "type": "rounded-rectangle", "x": 5, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#16a34a", "text": "Rounded", "text_color": "#ffffff", "text_size": 12, "curvature": 2},
-        "rounded2": {"id": "rounded2", "type": "rounded-rectangle", "x": 28, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#22c55e", "text": "High Curve", "text_color": "#ffffff", "text_size": 12, "curvature": 3, "stroke": "#065f46", "stroke_width": 0.2},
+        "rounded2": {"id": "rounded2", "type": "rounded-rectangle", "x": 28, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#22c55e", "text": "High Curve", "text_color": "#ffffff", "text_size": 12, "curvature": 3, "stroke": "#065f46", "stroke_width": 0.2, "margin": 2},
         "rounded3": {"id": "rounded3", "type": "rounded-rectangle", "x": 51, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#15803d", "text": "Low Curve", "text_color": "#ffffff", "text_size": 12, "curvature": 4, "stroke": "#fbbf24", "stroke_width": 0.5, "stroke_dasharray": "8,2"},
         "rounded4": {"id": "rounded4", "type": "rounded-rectangle", "x": 74, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#166534", "text": "Medium curve with longer text", "text_color": "#ffffff", "curvature": 5, "stroke": "#dc2626", "stroke_width": 0.2, "stroke_opacity": 0.7},
 
         "ellipse1": {"id": "ellipse1", "type": "ellipse", "x": 5, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#ca8a04", "text": "Ellipse", "text_color": "#ffffff", "text_size": 12},
-        "ellipse2": {"id": "ellipse2", "type": "ellipse", "x": 28, "y": 49, "w": 15, "h": 15, "unit": "%", "z": 10, "fill": "#eab308", "text": "Circle", "text_color": "#ffffff", "text_size": 12, "stroke": "#92400e", "stroke_width": 0.5},
+        "ellipse2": {"id": "ellipse2", "type": "ellipse", "x": 28, "y": 49, "w": 15, "h": 15, "unit": "%", "z": 10, "fill": "#eab308", "text": "Circle", "text_color": "#ffffff", "text_size": 12, "stroke": "#92400e", "stroke_width": 0.5, "margin": 2},
         "ellipse3": {"id": "ellipse3", "type": "ellipse", "x": 51, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#a16207", "text": "Wide Oval", "text_color": "#ffffff", "text_size": 12, "stroke": "#dc2626", "stroke_width": 0.2, "stroke_dasharray": "10,5"},
         "ellipse4": {"id": "ellipse4", "type": "ellipse", "x": 74, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#854d0e", "text": "Ellipse with text wrapping example", "text_color": "#ffffff", "stroke": "#3b82f6", "stroke_width": 0.2, "stroke_linecap": "round", "stroke_linejoin": "round"},
 
         "diamond1": {"id": "diamond1", "type": "diamond", "x": 5, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#dc2626", "text": "Diamond", "text_color": "#ffffff", "text_size": 12},
-        "diamond2": {"id": "diamond2", "type": "diamond", "x": 28, "y": 66, "w": 15, "h": 15, "unit": "%", "z": 10, "fill": "#ef4444", "text": "Square", "text_color": "#ffffff", "text_size": 12, "stroke": "#7c2d12", "stroke_width": 0.2},
+        "diamond2": {"id": "diamond2", "type": "diamond", "x": 28, "y": 66, "w": 15, "h": 15, "unit": "%", "z": 10, "fill": "#ef4444", "text": "Square", "text_color": "#ffffff", "text_size": 12, "stroke": "#7c2d12", "stroke_width": 0.2, "margin": 2},
         "diamond3": {"id": "diamond3", "type": "diamond", "x": 51, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#b91c1c", "text": "Wide", "text_color": "#ffffff", "text_size": 12, "stroke": "#16a34a", "stroke_width": 0.5, "stroke_dasharray": "6,4"},
         "diamond4": {"id": "diamond4", "type": "diamond", "x": 74, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#991b1b", "text": "Diamond with longer text content", "text_color": "#ffffff", "stroke": "#fbbf24", "stroke_width": 0.2, "stroke_opacity": 0.8}
       }
@@ -92,27 +92,27 @@
     {
       "id": "polygon-shapes",
       "layout": "shape-showcase",
-      "meta": { "slide_title": "Polygon Shapes - Triangle, Pentagon, Hexagon, Chevron" },
+      "meta": { "slide_title": "Polygon Shapes - Triangle, Chevron-Start, Hexagon, Chevron" },
       "shapes": {
         "triangle1": {"id": "triangle1", "type": "triangle", "x": 5, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#db2777", "text": "Triangle", "text_color": "#ffffff", "text_size": 12},
         "triangle2": {"id": "triangle2", "type": "triangle", "x": 28, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#ec4899", "text": "With Border", "text_color": "#ffffff", "text_size": 12, "stroke": "#831843", "stroke_width": 0.2},
         "triangle3": {"id": "triangle3", "type": "triangle", "x": 51, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#be185d", "text": "Dashed", "text_color": "#ffffff", "text_size": 12, "stroke": "#16a34a", "stroke_width": 0.5, "stroke_dasharray": "6,6"},
         "triangle4": {"id": "triangle4", "type": "triangle", "x": 74, "y": 15, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#9d174d", "text": "Triangle with text", "text_color": "#ffffff", "stroke": "#fbbf24", "stroke_width": 0.2, "stroke_linejoin": "round"},
 
-        "pentagon1": {"id": "pentagon1", "type": "pentagon", "x": 5, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#7c2d12", "text": "Pentagon", "text_color": "#ffffff", "text_size": 11},
-        "pentagon2": {"id": "pentagon2", "type": "pentagon", "x": 28, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#a3433c", "text": "5-sided", "text_color": "#ffffff", "text_size": 11, "stroke": "#dc2626", "stroke_width": 0.2},
-        "pentagon3": {"id": "pentagon3", "type": "pentagon", "x": 51, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#b45309", "text": "Regular", "text_color": "#ffffff", "text_size": 11, "stroke": "#2563eb", "stroke_width": 0.2, "stroke_dasharray": "4,4"},
-        "pentagon4": {"id": "pentagon4", "type": "pentagon", "x": 74, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#92400e", "text": "Pentagon shape", "text_color": "#ffffff", "stroke": "#059669", "stroke_width": 0.5, "stroke_opacity": 0.8},
+        "chevron-start1": {"id": "chevron-start1", "type": "chevron-start", "x": 5, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#7c2d12", "text": "Chevron Start", "text_color": "#ffffff", "text_size": 11, "tipSize": 2},
+        "chevron-start2": {"id": "chevron-start2", "type": "chevron-start", "x": 28, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#a3433c", "text": "Large Tip Thick Border", "text_color": "#ffffff", "text_size": 11, "stroke": "#dc2626", "stroke_width": 0.2, "tipSize": 5},
+        "chevron-start3": {"id": "chevron-start3", "type": "chevron-start", "x": 51, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#b45309", "text": "Dashed", "text_color": "#ffffff", "text_size": 11, "stroke": "#2563eb", "stroke_width": 0.2, "stroke_dasharray": "4,4", "tipSize": 5},
+        "chevron-start4": {"id": "chevron-start4", "type": "chevron-start", "x": 74, "y": 32, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#92400e", "text": "Small Tip", "text_color": "#ffffff", "stroke": "#059669", "stroke_width": 0.5, "stroke_opacity": 0.8, "tipSize": 0.5},
 
         "hexagon1": {"id": "hexagon1", "type": "hexagon", "x": 5, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#374151", "text": "Hexagon", "text_color": "#ffffff", "text_size": 12},
         "hexagon2": {"id": "hexagon2", "type": "hexagon", "x": 28, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#4b5563", "text": "6-sided", "text_color": "#ffffff", "text_size": 12, "stroke": "#1f2937", "stroke_width": 0.2},
         "hexagon3": {"id": "hexagon3", "type": "hexagon", "x": 51, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#6b7280", "text": "Flat Top", "text_color": "#ffffff", "text_size": 12, "stroke": "#dc2626", "stroke_width": 0.2, "stroke_dasharray": "5,3"},
         "hexagon4": {"id": "hexagon4", "type": "hexagon", "x": 74, "y": 49, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#9ca3af", "text": "Hexagon with text", "text_color": "#000000", "stroke": "#16a34a", "stroke_width": 0.2, "stroke_linejoin": "bevel"},
 
-        "chevron1": {"id": "chevron1", "type": "chevron", "x": 5, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#0f766e", "text": "Chevron", "text_color": "#ffffff", "text_size": 11, "tipSize": 20},
-        "chevron2": {"id": "chevron2", "type": "chevron", "x": 28, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#14b8a6", "text": "Arrow", "text_color": "#ffffff", "text_size": 11, "tipSize": 30, "stroke": "#0d9488", "stroke_width": 0.2},
-        "chevron3": {"id": "chevron3", "type": "chevron", "x": 51, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#0d9488", "text": "Point", "text_color": "#ffffff", "text_size": 11, "tipSize": 15, "stroke": "#ca8a04", "stroke_width": 0.2, "stroke_dasharray": "7,3"},
-        "chevron4": {"id": "chevron4", "type": "chevron", "x": 74, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#0f766e", "text": "Directional shape", "text_color": "#ffffff", "tipSize": 25, "stroke": "#ef4444", "stroke_width": 0.5, "stroke_linecap": "round"}
+        "chevron1": {"id": "chevron1", "type": "chevron", "x": 5, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#0f766e", "text": "Chevron", "text_color": "#ffffff", "text_size": 11, "tipSize": 2},
+        "chevron2": {"id": "chevron2", "type": "chevron", "x": 28, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#14b8a6", "text": "Large Tip Thick Border", "text_color": "#ffffff", "text_size": 11, "tipSize": 5, "stroke": "#0d9488", "stroke_width": 0.2},
+        "chevron3": {"id": "chevron3", "type": "chevron", "x": 51, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#0d9488", "text": "Dashed", "text_color": "#ffffff", "text_size": 11, "tipSize": 5, "stroke": "#ca8a04", "stroke_width": 0.2, "stroke_dasharray": "7,3"},
+        "chevron4": {"id": "chevron4", "type": "chevron", "x": 74, "y": 66, "w": 18, "h": 12, "unit": "%", "z": 10, "fill": "#0f766e", "text": "Small Tip", "text_color": "#ffffff", "tipSize": 0.5, "stroke": "#ef4444", "stroke_width": 0.5, "stroke_linecap": "round"}
       }
     },
     {
@@ -120,14 +120,14 @@
       "layout": "shape-showcase",
       "meta": { "slide_title": "Special Shapes - Speech Bubbles" },
       "shapes": {
-        "speech1": {"id": "speech1", "type": "speech-bubble", "x": 5, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#06b6d4", "text": "Hello!", "text_color": "#ffffff", "text_size": 14, "tipSize": 2, "curvature": 2},
-        "speech2": {"id": "speech2", "type": "speech-bubble", "x": 30, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#0891b2", "text": "Speech", "text_color": "#ffffff", "text_size": 14, "tipSize": 3, "curvature": 3, "stroke": "#155e75", "stroke_width": 0.2},
-        "speech3": {"id": "speech3", "type": "speech-bubble", "x": 55, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#0e7490", "text": "Bubble", "text_color": "#ffffff", "text_size": 14, "tipSize": 2, "curvature": 2, "stroke": "#fbbf24", "stroke_width": 0.2, "stroke_dasharray": "4,4"},
+        "speech1": {"id": "speech1", "type": "speech-bubble", "x": 5, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#06b6d4", "text": "Hello!", "text_color": "#ffffff", "text_size": 14, "tipSize": 0.01, "curvature": 2},
+        "speech2": {"id": "speech2", "type": "speech-bubble", "x": 30, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#0891b2", "text": "Speech", "text_color": "#ffffff", "text_size": 14, "tipSize": 4, "curvature": 3, "stroke": "#155e75", "stroke_width": 0.2},
+        "speech3": {"id": "speech3", "type": "speech-bubble", "x": 55, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#0e7490", "text": "Bubble", "text_color": "#ffffff", "text_size": 14, "tipSize": 1, "curvature": 2, "stroke": "#fbbf24", "stroke_width": 0.2, "stroke_dasharray": "4,4"},
         "speech4": {"id": "speech4", "type": "speech-bubble", "x": 75, "y": 15, "w": 20, "h": 15, "unit": "%", "z": 10, "fill": "#155e75", "text": "Speech bubble with longer text content", "text_color": "#ffffff", "text_size": 12, "tipSize": 3, "curvature": 4, "stroke": "#dc2626", "stroke_width": 0.2, "stroke_opacity": 0.8},
 
-        "speech5": {"id": "speech5", "type": "speech-bubble", "x": 5, "y": 40, "w": 25, "h": 20, "unit": "%", "z": 10, "fill": "#7c3aed", "text": "Large speech bubble with more room for text content", "text_color": "#ffffff", "text_size": 13, "tipSize": 3, "curvature": 4},
+        "speech5": {"id": "speech5", "type": "speech-bubble", "x": 5, "y": 40, "w": 25, "h": 20, "unit": "%", "z": 10, "fill": "#7c3aed", "text": "Large speech bubble with more room for text content", "text_color": "#ffffff", "text_size": 13, "tipSize": 2, "curvature": 4},
         "speech6": {"id": "speech6", "type": "speech-bubble", "x": 35, "y": 40, "w": 25, "h": 20, "unit": "%", "z": 10, "fill": "#8b5cf6", "text": "Another large bubble", "text_color": "#ffffff", "text_size": 13, "tipSize": 3, "curvature": 4, "stroke": "#581c87", "stroke_width": 0.5},
-        "speech7": {"id": "speech7", "type": "speech-bubble", "x": 65, "y": 40, "w": 30, "h": 20, "unit": "%", "z": 10, "fill": "#6d28d9", "text": "Extra large speech bubble with plenty of space for comprehensive text content that wraps nicely", "text_color": "#ffffff", "text_size": 12, "tipSize": 4, "curvature": 5, "stroke": "#16a34a", "stroke_width": 0.2, "stroke_dasharray": "8,4"}
+        "speech7": {"id": "speech7", "type": "speech-bubble", "x": 65, "y": 40, "w": 30, "h": 20, "unit": "%", "z": 10, "fill": "#6d28d9", "text": "Extra large speech bubble with plenty of space for comprehensive text content that wraps nicely", "text_color": "#ffffff", "text_size": 12, "tipSize": 8, "curvature": 5, "stroke": "#16a34a", "stroke_width": 0.2, "stroke_dasharray": "8,4"}
       }
     }
   ]

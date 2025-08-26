@@ -28,8 +28,8 @@
       "x": 5, "y": 92, "w": 90, "h": 5, "unit": "%",
       "z": 101,
       "text": "{company} | {date}",
-      "font_size": 12,
-      "color": "#475569",
+      "text_size": 12,
+      "text_color": "#475569",
       "text_align": "right"
     }
   },
@@ -43,10 +43,10 @@
           "x": 10, "y": 25, "w": 80, "h": 25, "unit": "%",
           "z": 10,
           "text": "Presentation Title",
-          "font_family": "Inter",
-          "font_size": 52,
-          "font_weight": 700,
-          "color": "#0f172a",
+          "text_font": "Inter",
+          "text_size": 52,
+          "text_weight": 700,
+          "text_color": "#0f172a",
           "text_align": "center"
         },
         "subtitle": {
@@ -55,9 +55,9 @@
           "x": 10, "y": 55, "w": 80, "h": 15, "unit": "%",
           "z": 11,
           "text": "Subtitle here",
-          "font_family": "Inter",
-          "font_size": 24,
-          "color": "#475569",
+          "text_font": "Inter",
+          "text_size": 24,
+          "text_color": "#475569",
           "text_align": "center"
         }
       }
@@ -71,10 +71,10 @@
           "x": 5, "y": 15, "w": 90, "h": 12, "unit": "%",
           "z": 10,
           "text": "Section Title",
-          "font_family": "Inter",
-          "font_size": 36,
-          "font_weight": 700,
-          "color": "#2563eb"
+          "text_font": "Inter",
+          "text_size": 36,
+          "text_weight": 700,
+          "text_color": "#2563eb"
         },
         "content": {
           "id": "content",
@@ -86,8 +86,8 @@
             "Important insight two",
             "Critical finding three"
           ],
-          "font_family": "Inter",
-          "font_size": 24,
+          "text_font": "Inter",
+          "text_size": 24,
           "line_height": 1.6
         }
       }

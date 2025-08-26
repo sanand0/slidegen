@@ -2,35 +2,129 @@
   "version": "1.0.0",
   "id": "basic-deck",
   "name": "Basic Deck",
-  "slide_size": { "w": 1280, "h": 720, "unit": "px" },
+  "slide_size": {
+    "w": 1280,
+    "h": 720,
+    "unit": "px"
+  },
   "colors": {
     "bg": "#ffffff",
     "text": "#333333"
   },
-  "fonts": { "body": "Arial" },
+  "fonts": {
+    "body": "Arial"
+  },
   "layouts": {
     "title-only": {
       "name": "Title Only",
-      "bg": { "fill": "#ffffff" },
+      "bg": {
+        "fill": "#ffffff"
+      },
       "shapes": {
         "title": {
           "id": "title",
           "type": "text",
-          "x": 10, "y": 30, "w": 80, "h": 20, "unit": "%",
+          "x": 10,
+          "y": 30,
+          "w": 80,
+          "h": 20,
+          "unit": "%",
           "text": "Slide Title",
-          "font_size": 48,
+          "text_size": 48,
           "text_align": "center"
+        }
+      }
+    },
+    "content-with-data": {
+      "name": "Content with Data",
+      "bg": {
+        "fill": "#ffffff"
+      },
+      "shapes": {
+        "header": {
+          "id": "header",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 100,
+          "h": 12,
+          "unit": "%",
+          "fill": "#3f4c96"
+        },
+        "title": {
+          "id": "title",
+          "type": "text",
+          "x": 5,
+          "y": 2,
+          "w": 90,
+          "h": 8,
+          "unit": "%",
+          "text": "Slide Title",
+          "text_size": 36,
+          "text_align": "left",
+          "text_color": "#ffffff",
+          "text_weight": "bold"
+        },
+        "content_text": {
+          "id": "content_text",
+          "type": "text",
+          "x": 5,
+          "y": 18,
+          "w": 55,
+          "h": 60,
+          "unit": "%",
+          "text": "Content text goes here...",
+          "text_size": 20,
+          "text_align": "left",
+          "text_color": "#333333"
+        },
+        "data_placeholder": {
+          "id": "data_placeholder",
+          "type": "image",
+          "x": 50,
+          "y": 18,
+          "w": 62,
+          "h": 60,
+          "unit": "%",
+          "image_src": "https://placehold.co/400x400"
+        },
+        "takeaway": {
+          "id": "takeaway",
+          "type": "rounded-rectangle",
+          "curvature": 2.5,
+          "fill": "#ff8c42",
+          "x": 7,
+          "y": 87,
+          "w": 86,
+          "h": 6,
+          "unit": "%",
+          "text": "OPTIONAL takeaway: What should the audience do now?",
+          "text_size": 24,
+          "text_align": "center",
+          "text_color": "#ffffff",
+          "text_weight": "bold"
         }
       }
     }
   },
-  "slides": [{
-    "id": "slide1",
-    "layout": "title-only",
-    "shapes": {
-      "title": {
-        "text": "Welcome!"
+  "slides": [
+    {
+      "id": "slide1",
+      "layout": "title-only",
+      "shapes": {
+        "title": {
+          "text": "Welcome!"
+        }
+      }
+    },
+    {
+      "id": "slide2",
+      "layout": "content-with-data",
+      "shapes": {
+        "title": {
+          "text": "Welcome!"
+        }
       }
     }
-  }]
+  ]
 }

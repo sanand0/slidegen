@@ -1,14 +1,14 @@
 import { describe, it, beforeEach, expect } from "vitest";
 import { Window } from "happy-dom";
 import { readFileSync } from "fs";
-import html from "./slidegen.js";
+import html from "./slideforge.js";
 
 const loadTestDeck = (filename) => {
   const content = readFileSync(`./tests/${filename}`, "utf8");
   return JSON.parse(content);
 };
 
-describe("slidegen", () => {
+describe("slideforge", () => {
   let window, document;
 
   beforeEach(() => {
@@ -38,15 +38,15 @@ describe("slidegen", () => {
       const result = html(testDecks.basic);
       document.body.innerHTML = result;
 
-      const deckElement = document.querySelector(".slidegen-deck");
+      const deckElement = document.querySelector(".slideforge-deck");
       expect(deckElement).toBeTruthy();
       expect(deckElement.getAttribute("data-deck-id")).toBe("basic-deck");
 
-      const styleElement = document.querySelector("style[scoped]");
+      const styleElement = document.querySelector("style");
       expect(styleElement).toBeTruthy();
 
       const slideElements = document.querySelectorAll(".slide");
-      expect(slideElements.length).toBe(1);
+      expect(slideElements.length).toBe(2);
       expect(slideElements[0].getAttribute("data-slide-id")).toBe("slide1");
     });
 
@@ -196,11 +196,13 @@ describe("slidegen", () => {
 
       const slideElements = document.querySelectorAll(".slide");
       expect(slideElements.length).toBeGreaterThan(0);
-
-      // Check that root background images are applied as background div elements
-      const backgroundElements = document.querySelectorAll(".background");
-      expect(backgroundElements.length).toBeGreaterThan(0);
-      expect(result).toContain("background-image: url('https://placehold.co/1280x720/e2e8f0/64748b?text=Background')");
+      // Check that root background images are applied as inline styles on slide
+      const slidesWithBg = [...document.querySelectorAll(".slide")].filter((s) =>
+        (s.getAttribute("style") || "").includes(
+          "background-image: url('https://placehold.co/1280x720/e2e8f0/64748b?text=Background')",
+        ),
+      );
+      expect(slidesWithBg.length).toBeGreaterThan(0);
       expect(result).toContain("background-size: cover");
     });
 
@@ -341,6 +343,17 @@ describe("slidegen", () => {
     });
   });
 
+  describe("Version validation", () => {
+    it("accepts 1.x or missing version and rejects others", () => {
+      const okMissing = { layouts: { l: { name: "L", shapes: {} } }, slides: [{ id: "x", layout: "l" }] };
+      const ok1 = { ...okMissing, version: "1.2.3" };
+      const bad2 = { ...okMissing, version: "2.0.0" };
+      expect(html(okMissing)).not.toBe("");
+      expect(html(ok1)).not.toBe("");
+      expect(html(bad2)).toBe("");
+    });
+  });
+
   describe("Additional positioning features", () => {
     it("handles different units (em, rem)", () => {
       const customDeck = {
@@ -397,15 +410,23 @@ describe("slidegen", () => {
   });
 
   describe("SVG Shapes", () => {
-    it("renders SVG shapes correctly", () => {
+    it("renders SVG shapes correctly with data attributes", () => {
       const result = html(testDecks.shapes);
       document.body.innerHTML = result;
 
-      const deckElement = document.querySelector(".slidegen-deck");
+      const deckElement = document.querySelector(".slideforge-deck");
       expect(deckElement).toBeTruthy();
 
       const slideElements = document.querySelectorAll(".slide");
       expect(slideElements.length).toBe(4); // Now has 4 slides with different shape categories
+
+      // Check that shapes have data attributes
+      const shapeElements = document.querySelectorAll(".shape");
+      expect(shapeElements.length).toBeGreaterThan(0);
+
+      const rectangleShape = document.querySelector('[data-shape-id="rect1"]');
+      expect(rectangleShape).toBeTruthy();
+      expect(rectangleShape.getAttribute("data-shape-type")).toBe("rectangle");
     });
 
     it("generates proper SVG elements for basic shapes", () => {
@@ -432,7 +453,7 @@ describe("slidegen", () => {
       document.body.innerHTML = result;
 
       // Text is now in text overlay divs, not in SVG
-      const textOverlays = document.querySelectorAll(".text-overlay");
+      const textOverlays = document.querySelectorAll(".svg-shape .text-shape");
       expect(textOverlays.length).toBeGreaterThan(0);
 
       const rectangleText = [...textOverlays].find((el) => el.textContent === "Rectangle");
@@ -492,7 +513,7 @@ describe("slidegen", () => {
       expect(textElement).toBeFalsy();
 
       // No text overlay should exist since no text was provided
-      const textOverlay = document.querySelector(".text-overlay");
+      const textOverlay = document.querySelector(".svg-shape .text-shape");
       expect(textOverlay).toBeFalsy();
     });
 
@@ -509,7 +530,7 @@ describe("slidegen", () => {
       expect(result).toContain('stroke-opacity="0.7"');
     });
 
-    it("supports all shape types", () => {
+    it("supports all shape types including new chevron-start", () => {
       const shapeTypes = [
         "rectangle",
         "rounded-rectangle",
@@ -521,7 +542,7 @@ describe("slidegen", () => {
         "diamond",
         "triangle",
         "hexagon",
-        "pentagon",
+        "chevron-start",
         "speech-bubble",
         "chevron",
       ];
@@ -560,6 +581,40 @@ describe("slidegen", () => {
         expect(result).toContain("path");
         expect(result).toContain("Test");
       });
+    });
+
+    it("renders chevron with centered notch and consistent geometry", () => {
+      const result = html(testDecks.shapes);
+      document.body.innerHTML = result;
+
+      const chevronShape = document.querySelector('[data-shape-id="chevron1"]');
+      expect(chevronShape).toBeTruthy();
+      expect(chevronShape.getAttribute("data-shape-type")).toBe("chevron");
+
+      const pathElement = chevronShape.querySelector("path");
+      expect(pathElement).toBeTruthy();
+
+      const pathData = pathElement.getAttribute("d");
+      expect(pathData).toContain("M"); // Should start with Move command
+      expect(pathData).toContain("Z"); // Should end with close path
+    });
+
+    it("renders chevron-start with flat left edge and triangular right tip", () => {
+      const result = html(testDecks.shapes);
+      document.body.innerHTML = result;
+
+      const chevronStartShape = document.querySelector('[data-shape-id="chevron-start1"]');
+      expect(chevronStartShape).toBeTruthy();
+      expect(chevronStartShape.getAttribute("data-shape-type")).toBe("chevron-start");
+
+      const pathElement = chevronStartShape.querySelector("path");
+      expect(pathElement).toBeTruthy();
+
+      const pathData = pathElement.getAttribute("d");
+      expect(pathData).toContain("M"); // Should start with Move command
+      expect(pathData).toContain("Z"); // Should end with close path
+      // Verify it has a flat left edge (starts at margin, goes to same x coordinate)
+      expect(pathData).toMatch(/M[^L]*L[^L]*L/); // Multiple line segments for the shape
     });
 
     it("positions SVG shapes correctly with percentage units", () => {
@@ -626,7 +681,7 @@ describe("slidegen", () => {
       const svgElements = document.querySelectorAll("svg");
       expect(svgElements.length).toBe(2); // Two slide-specific shapes
 
-      const textOverlays = document.querySelectorAll(".text-overlay");
+      const textOverlays = document.querySelectorAll(".svg-shape .text-shape");
       const slideShapeText = [...textOverlays].find((el) => el.textContent === "Slide Shape");
       const anotherSlideShapeText = [...textOverlays].find((el) => el.textContent === "Another Slide Shape");
 
@@ -643,8 +698,8 @@ describe("slidegen", () => {
       const svgShapes = document.querySelectorAll(".svg-shape");
       expect(svgShapes.length).toBeGreaterThan(0);
 
-      // Check that text is in text-overlay div, not in SVG
-      const textOverlays = document.querySelectorAll(".text-overlay");
+      // Check that text is in a text-shape overlay within svg-shape, not in SVG
+      const textOverlays = document.querySelectorAll(".svg-shape .text-shape");
       expect(textOverlays.length).toBeGreaterThan(0);
 
       // Verify SVG doesn't contain text elements (moved outside)
@@ -654,7 +709,7 @@ describe("slidegen", () => {
 
     it("applies proper positioning for text overlay", () => {
       const result = html(testDecks.shapes);
-      expect(result).toContain('class="text-overlay"');
+      expect(result).toContain(".svg-shape .text-shape");
       expect(result).toContain("position: absolute");
       expect(result).toContain("width: 100%");
       expect(result).toContain("height: 100%");
@@ -665,7 +720,7 @@ describe("slidegen", () => {
       document.body.innerHTML = result;
 
       // Find the shape with long text
-      const textOverlays = document.querySelectorAll(".text-overlay");
+      const textOverlays = document.querySelectorAll(".svg-shape .text-shape");
       const longTextOverlay = [...textOverlays].find((el) => el.textContent.includes("Long text that wraps nicely"));
       expect(longTextOverlay).toBeTruthy();
       expect(longTextOverlay.textContent).toContain("Long text that wraps nicely");

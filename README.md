@@ -1,8 +1,8 @@
-# slidegen
+# slideforge
 
-[![npm version](https://img.shields.io/npm/v/slidegen.svg)](https://www.npmjs.com/package/slidegen)
+[![npm version](https://img.shields.io/npm/v/slideforge.svg)](https://www.npmjs.com/package/slideforge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/slidegen)](https://bundlephobia.com/package/slidegen)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/slideforge)](https://bundlephobia.com/package/slideforge)
 
 Generates slides as HTML from JSON schema - a simple, flexible slide deck generator.
 
@@ -11,25 +11,25 @@ Generates slides as HTML from JSON schema - a simple, flexible slide deck genera
 To use locally, install via `npm`:
 
 ```bash
-npm install slidegen
+npm install slideforge
 ```
 
 ... and add this to your script:
 
 ```js
-import html from "./node_modules/slidegen/dist/slidegen.min.js";
+import html from "./node_modules/slideforge/dist/slideforge.min.js";
 ```
 
 To use via CDN, add this to your script:
 
 ```js
-import html from "https://cdn.jsdelivr.net/npm/slidegen@1";
+import html from "https://cdn.jsdelivr.net/npm/slideforge@1";
 ```
 
 ## Usage
 
 ```js
-import html from "slidegen";
+import html from "slideforge";
 
 const deck = {
   version: "1.0.0",
@@ -44,13 +44,12 @@ const deck = {
     bg: "#ffffff",
     surface: "#f8fafc",
   },
-  fonts: { heading: "Inter", body: "Inter" },
+  fonts: { heading: "Arial", body: "Inter" },
   bg: { image: "https://cdn.example.com/bg.jpg", image_fit: "cover" },
   shapes: {
     logo: {
       id: "logo",
       type: "image",
-      role: "logo",
       x: 90,
       y: 2,
       w: 8,
@@ -70,7 +69,6 @@ const deck = {
         title: {
           id: "title",
           type: "text",
-          role: "title",
           x: 8,
           y: 28,
           w: 84,
@@ -78,11 +76,11 @@ const deck = {
           unit: "%",
           z: 10,
           text: "Slide Title",
-          font_family: "Inter",
-          font_size: 48,
-          font_weight: 700,
+          text_font: "Inter",
+          text_size: 48,
+          text_weight: 700,
           line_height: 1.1,
-          color: "#0f172a",
+          text_color: "#0f172a",
           text_align: "left",
         },
       },
@@ -111,8 +109,8 @@ document.body.innerHTML = slideHTML;
 
 A slide deck consists of:
 
-- **version**: Schema version (always "1.0.0")
-- **id**: Unique deck identifier
+- **version**: Schema version (must start with `1.`; if omitted, treated as compatible)
+- **id**: Unique deck identifier (sets the `data-deck-id=` attribute)
 - **name**: Human-readable deck name
 - **slide_size**: Dimensions and units for all slides
 - **colors**: Color palette used throughout
@@ -144,7 +142,6 @@ A slide deck consists of:
     "logo": {
       "id": "logo",
       "type": "image",
-      "role": "logo",
       "x": 90,
       "y": 2,
       "w": 8,
@@ -158,7 +155,6 @@ A slide deck consists of:
     "footer": {
       "id": "footer",
       "type": "text",
-      "role": "footer",
       "x": 4,
       "y": 92,
       "w": 92,
@@ -167,9 +163,9 @@ A slide deck consists of:
       "z": 101,
       "text": "{org_name} • {date}",
       "text_align": "right",
-      "font_family": "Inter",
-      "font_size": 12,
-      "color": "#475569"
+      "text_font": "Inter",
+      "text_size": 12,
+      "text_color": "#475569"
     }
   },
   "layouts": {
@@ -180,7 +176,6 @@ A slide deck consists of:
         "title": {
           "id": "title",
           "type": "text",
-          "role": "title",
           "x": 8,
           "y": 28,
           "w": 84,
@@ -188,17 +183,16 @@ A slide deck consists of:
           "unit": "%",
           "z": 10,
           "text": "Slide Title",
-          "font_family": "Inter",
-          "font_size": 48,
-          "font_weight": 700,
+          "text_font": "Inter",
+          "text_size": 48,
+          "text_weight": 700,
           "line_height": 1.1,
-          "color": "#0f172a",
+          "text_color": "#0f172a",
           "text_align": "left"
         },
         "subtitle": {
           "id": "subtitle",
           "type": "text",
-          "role": "subtitle",
           "x": 8,
           "y": 50,
           "w": 84,
@@ -206,9 +200,9 @@ A slide deck consists of:
           "unit": "%",
           "z": 11,
           "text": "Subtitle or key message",
-          "font_family": "Inter",
-          "font_size": 22,
-          "color": "#475569",
+          "text_font": "Inter",
+          "text_size": 22,
+          "text_color": "#475569",
           "text_align": "left"
         }
       }
@@ -219,7 +213,6 @@ A slide deck consists of:
         "title": {
           "id": "title",
           "type": "text",
-          "role": "title",
           "x": 6,
           "y": 6,
           "w": 88,
@@ -227,17 +220,16 @@ A slide deck consists of:
           "unit": "%",
           "z": 10,
           "text": "Section Header",
-          "font_family": "Inter",
-          "font_size": 36,
-          "font_weight": 700,
+          "text_font": "Inter",
+          "text_size": 36,
+          "text_weight": 700,
           "line_height": 1.15,
-          "color": "#0f172a",
+          "text_color": "#0f172a",
           "text_align": "left"
         },
         "content": {
           "id": "content",
           "type": "list",
-          "role": "content",
           "x": 6,
           "y": 22,
           "w": 88,
@@ -246,8 +238,8 @@ A slide deck consists of:
           "z": 11,
           "items": ["Item A", "Item B"],
           "bullet": "•",
-          "font_family": "Inter",
-          "font_size": 20,
+          "text_font": "Inter",
+          "text_size": 20,
           "line_height": 1.35
         }
       }
@@ -294,20 +286,26 @@ Layouts are keyed by ID at the top level. No `id` field inside each layout entry
 
 ### Shape Types
 
-#### Text Shapes
+#### Text Properties
+
+These properties control text rendering. They apply to `type: "text"` shapes directly, to list items (each list item is rendered via the text-shape generator), and to all SVG shapes via a text overlay. SVG and list items reuse the text-shape generator, so the same props apply.
 
 ```json
 {
   "type": "text",
   "text": "Hello World",
-  "font_family": "Inter",
-  "font_size": 24,
-  "font_weight": 700,
-  "color": "#000000",
-  "text_align": "left",
+  "text_font": "Inter", // or a font key from deck.fonts, e.g., "heading"
+  "text_size": 24,
+  "text_weight": 700, // number or CSS keyword (e.g., "bold")
+  "text_color": "#000000", // or a color key from deck.colors, e.g., "accent1"
+  "text_align": "left", // left | center | right | justify
+  "text_valign": "middle", // top | middle | bottom
   "line_height": 1.2
 }
 ```
+
+Defaults by shape type: Text/List default to `text_align: "left"`, `text_valign: "middle"`; SVG text overlays default to `text_align: "center"`, `text_valign: "middle"`.
+Note: `margin` is a shape-path inset for certain SVG shapes (rectangle, rounded-rectangle, etc.) and does not affect Text/List overlays.
 
 #### Image Shapes
 
@@ -315,7 +313,8 @@ Layouts are keyed by ID at the top level. No `id` field inside each layout entry
 {
   "type": "image",
   "image_src": "https://example.com/image.jpg",
-  "image_fit": "cover"
+  "image_fit": "cover",
+  "alt": "Descriptive alt text" // optional; defaults to ""
 }
 ```
 
@@ -325,15 +324,16 @@ Layouts are keyed by ID at the top level. No `id` field inside each layout entry
 {
   "type": "list",
   "items": ["First item", "Second item", "Third item"],
-  "font_family": "Inter",
-  "font_size": 18,
-  "line_height": 1.4
+  "bullet": "•" // optional; prefix added to each item
+  // All Text Properties apply to list items (font, size, weight, color, align, line_height)
 }
 ```
 
+Note: `type: "list"` ignores a `text` field if present; only `items` render.
+
 #### SVG Shapes
 
-All SVG shapes support fill, stroke, and text overlays:
+All SVG shapes support fill, stroke, and text overlays. Text overlays inherit all properties documented under “Text Properties” because SVG shapes use the same text-shape generator under the hood. The text overlay is simply a `.text-shape` inside `.svg-shape` and is positioned/centered via CSS:
 
 ```json
 {
@@ -342,12 +342,23 @@ All SVG shapes support fill, stroke, and text overlays:
   "stroke": "#1d4ed8",
   "stroke_width": 2,
   "text": "Label",
+  "text_font": "Inter",
+  "text_size": 14,
+  "text_weight": 600,
   "text_color": "#ffffff",
-  "text_size": 16
+  "text_align": "center",
+  "line_height": 1.2
 }
 ```
 
-**Available shapes:** rectangle, rounded-rectangle, ellipse, arrow-right, arrow-left, arrow-up, arrow-down, diamond, triangle, hexagon, pentagon, speech-bubble, chevron
+Color and font resolution:
+
+- Color fields (`text_color`, `fill`, `stroke`) accept CSS color values (e.g., `#2563eb`) or palette keys from `deck.colors` (e.g., `"accent1"`).
+- Font field (`text_font`) accepts a CSS font family (e.g., `Inter`) or a font key from `deck.fonts` (e.g., `"heading"`, `"body"`).
+  Both resolve automatically at render time.
+  The deck container uses `fonts.body` globally; `fonts.heading` applies only where a shape sets `text_font: "heading"`.
+
+**Available shapes:** rectangle, rounded-rectangle, ellipse, arrow-right, arrow-left, arrow-up, arrow-down, diamond, triangle, hexagon, speech-bubble, chevron-start, chevron
 
 ### Slides
 
@@ -390,6 +401,8 @@ Use `{variable}` syntax in text that gets replaced with values from slide metada
 
 Results in: "Presented by ACME Corp on 2025-08-13"
 
+Scope: Only textual fields interpolate (`text` in text/list/SVG overlay). Non-text fields like `image_src` and `bg.image` do not interpolate.
+
 ### Shape Positioning
 
 All shapes support positioning with:
@@ -399,6 +412,7 @@ All shapes support positioning with:
 - **unit**: "px", "%", "em", "rem", etc.
 - **z**: Z-index for layering
 - **opacity**: 0.0 to 1.0
+  Defaults: Slides default to `px`; shapes default to `%`.
 
 ## API
 
@@ -418,14 +432,14 @@ Converts a slide deck JSON object to HTML string with scoped CSS.
 
 ```js
 const htmlOutput = html(deckConfig);
-// Returns: <div class="slidegen-deck">...</div>
+// Returns: <div class="slideforge-deck">...</div>
 ```
 
 ## Development
 
 ```bash
-git clone https://github.com/sanand0/slidegen.git
-cd slidegen
+git clone https://github.com/sanand0/slideforge.git
+cd slideforge
 
 npm install
 npm run lint && npm run build && npm test
@@ -436,7 +450,7 @@ git commit . -m"$COMMIT_MSG"; git tag $VERSION; git push --follow-tags
 
 ## Release notes
 
-[1.0.0](https://npmjs.com/package/slidegen/v/1.0.0): 13 Aug 2025: Initial release with JSON to HTML conversion
+[1.0.0](https://npmjs.com/package/slideforge/v/1.0.0): 26 Aug 2025: Initial release with JSON to HTML conversion
 
 ## License
 
