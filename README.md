@@ -8,22 +8,40 @@ Generates slides as HTML from JSON schema - a simple, flexible slide deck genera
 
 ## Installation
 
+Add this to your script:
+
+```js
+import html from "slideforge";
+```
+
+To use via CDN, add this to your HTML file:
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "slideforge": "https://cdn.jsdelivr.net/npm/slideforge@1"
+    }
+  }
+</script>
+```
+
 To use locally, install via `npm`:
 
 ```bash
 npm install slideforge
 ```
 
-... and add this to your script:
+... and add this to your HTML file:
 
-```js
-import html from "./node_modules/slideforge/dist/slideforge.min.js";
-```
-
-To use via CDN, add this to your script:
-
-```js
-import html from "https://cdn.jsdelivr.net/npm/slideforge@1";
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "slideforge": "./node_modules/slideforge/dist/slideforge.min.js"
+    }
+  }
+</script>
 ```
 
 ## Usage
